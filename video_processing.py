@@ -1,29 +1,23 @@
+# video_processing.py
 import cv2
 
-def start_video_capture(process_frame_callback):
-    # 打开摄像头
-    cap = cv2.VideoCapture(0)
+def start_video_capture(detect_motion_callback, detect_pose_landmarks_callback):
+    cap = cv2.VideoCapture(0)  # 使用内置摄像头
 
-    if not cap.isOpened():
-        print("无法打开摄像头")
-        return
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
 
-    try:
-        while True:
-            ret, frame = cap.read()
-            if not ret:
-                print("无法读取摄像头帧")
-                break
+        # 调用回调函数处理帧
+        detect_pose_landmarks_callback(frame)
+        detect_motion_callback(frame)
 
-            # 处理当前帧
-            process_frame_callback(frame)
+        # 显示视频流
+        cv2.imshow('Video', frame)
 
-            # 显示视频
-            cv2.imshow('Real-time Video', frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):  # 按下 'q' 键退出
+            break
 
-            # 按 'q' 键退出
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-    finally:
-        cap.release()
-        cv2.destroyAllWindows()
+    cap.release()
+    cv2.destroyAllWindows()
