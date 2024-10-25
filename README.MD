@@ -18,7 +18,7 @@ VisionTrack is a Python-based project that focuses on real-time video processing
 ### Setup
 1. Clone the repository:
    ```bash
-   git clone <repository_url>
+   git clone git@github.com:smile-rr/vision_track.git
    cd vision_track
    ```
 
